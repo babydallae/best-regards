@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Best Regards, | 사유세탁소</title>
+  <title>Best Regards,</title>
   <meta name="description" content="연차·반차·이직 사유, 말할 수 있게 만들어드립니다.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Special+Elite&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Nanum+Pen+Script&family=Special+Elite&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -17,25 +17,16 @@
       overflow-x: hidden;
     }
 
-    /* Page container - maintains 1366:768 aspect ratio */
     .page {
       position: relative;
       width: 100%;
       max-width: 1366px;
       margin: 0 auto;
-      aspect-ratio: 1366 / 768;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
       display: none;
     }
-    .page.active {
-      display: block;
-    }
-    .page img {
+    .page.active { display: block; }
+    .page > .bg {
       width: 100%;
-      height: 100%;
-      object-fit: contain;
       display: block;
     }
 
@@ -65,72 +56,42 @@
       color: #888;
       transition: all 0.2s;
     }
-    .lang-btn.active {
-      background: #222;
-      color: #fff;
-    }
+    .lang-btn.active { background: #222; color: #fff; }
 
-    /* Overlay elements positioned with percentages */
-    .overlay {
+    /* ===== LANDING PAGE ===== */
+    .landing-click {
       position: absolute;
-      cursor: pointer;
-    }
-
-    /* Landing page button overlay */
-    .landing-btn-area {
-      /* Positioned over the "사유 만들기" / "Polish my excuse" button */
-      bottom: 17%;
-      right: 18%;
-      width: 20%;
-      height: 10%;
+      bottom: 15%;
+      right: 15%;
+      width: 24%;
+      height: 12%;
       cursor: pointer;
       z-index: 10;
-      /* Debug: uncomment to see clickable area */
-      /* background: rgba(255,0,0,0.2); */
-    }
-    .landing-btn-area:hover {
-      transform: scale(1.03);
-      transition: transform 0.2s;
     }
 
-    /* Input page textarea overlay */
-    .input-textarea {
+    /* ===== INPUT PAGE ===== */
+    .input-wrap {
       position: absolute;
-      top: 26%;
-      left: 16%;
-      width: 68%;
-      height: 62%;
-      background: transparent;
-      border: none;
-      outline: none;
-      resize: none;
-      font-family: 'Noto Sans KR', sans-serif;
-      font-size: clamp(12px, 1.4vw, 18px);
-      line-height: 1.8;
-      color: #333;
-      padding: 2% 3%;
+      /* Positioned over the memo paper area */
+      top: 22%;
+      left: 13%;
+      width: 74%;
+      height: 68%;
       z-index: 10;
+      display: flex;
+      flex-direction: column;
     }
-    .input-textarea::placeholder {
-      color: #aaa;
-    }
-
-    /* Type selector on input page */
-    .type-pills {
-      position: absolute;
-      top: 5%;
-      right: 5%;
+    .type-row {
       display: flex;
       gap: 6px;
-      z-index: 10;
+      margin-bottom: 10px;
       flex-wrap: wrap;
-      justify-content: flex-end;
     }
     .type-pill {
       padding: 5px 14px;
-      border: 2px solid #ccc;
+      border: 2px solid rgba(0,0,0,0.15);
       border-radius: 100px;
-      background: rgba(255,255,255,0.8);
+      background: rgba(255,255,255,0.6);
       font-family: inherit;
       font-size: clamp(10px, 1.1vw, 14px);
       font-weight: 700;
@@ -139,26 +100,56 @@
       transition: all 0.2s;
       white-space: nowrap;
     }
-    .type-pill:hover {
-      border-color: #222;
-      color: #222;
+    .type-pill:hover { border-color: #222; color: #222; }
+    .type-pill.active { background: #222; border-color: #222; color: #fff; }
+
+    /* Handwriting textarea on memo */
+    .memo-textarea {
+      flex: 1;
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      resize: none;
+      font-family: 'Nanum Pen Script', cursive;
+      font-size: clamp(18px, 2.2vw, 28px);
+      line-height: 2;
+      color: #2a2a2a;
+      padding: 8px 4px;
+      caret-color: #333;
     }
-    .type-pill.active {
-      background: #222;
-      border-color: #222;
-      color: #fff;
+    .memo-textarea::placeholder {
+      color: #b5a89a;
+      font-family: 'Nanum Pen Script', cursive;
+    }
+    /* Ruled lines effect */
+    .memo-lines {
+      position: absolute;
+      top: 22%;
+      left: 13%;
+      width: 74%;
+      height: 68%;
+      pointer-events: none;
+      z-index: 9;
+      background-image: repeating-linear-gradient(
+        transparent,
+        transparent calc(2em * 2 - 1px),
+        rgba(0,0,0,0.05) calc(2em * 2 - 1px),
+        rgba(0,0,0,0.05) calc(2em * 2)
+      );
+      background-size: 100% calc(clamp(18px, 2.2vw, 28px) * 2);
+      background-position: 0 calc(8px + clamp(18px, 2.2vw, 28px) * 2 - 1px);
     }
 
-    /* Submit button on input page */
-    .submit-area {
+    .submit-float {
       position: absolute;
-      bottom: 3%;
+      bottom: 4%;
       left: 50%;
       transform: translateX(-50%);
       z-index: 10;
     }
     .submit-btn {
-      padding: 10px 32px;
+      padding: 10px 36px;
       border: 2px solid #222;
       border-radius: 100px;
       background: #222;
@@ -169,77 +160,53 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-    .submit-btn:hover:not(:disabled) {
-      background: #444;
-      transform: scale(1.03);
-    }
-    .submit-btn:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
+    .submit-btn:hover:not(:disabled) { background: #444; transform: scale(1.03); }
+    .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-    /* Result page text overlay */
-    .result-text-area {
+    /* ===== RESULT PAGE ===== */
+    .result-wrap {
       position: absolute;
-      top: 18%;
-      left: 20%;
-      width: 53%;
-      height: 68%;
+      top: 17%;
+      left: 18%;
+      width: 56%;
+      height: 70%;
       z-index: 10;
       overflow-y: auto;
-      padding: 2%;
-      font-size: clamp(11px, 1.2vw, 15px);
+      padding: 2% 3%;
+    }
+    .result-wrap::-webkit-scrollbar { width: 4px; }
+    .result-wrap::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+
+    .result-section { margin-bottom: 20px; }
+    .result-label {
+      font-weight: 900;
+      font-size: clamp(12px, 1.2vw, 15px);
+      color: #222;
+      margin-bottom: 6px;
+    }
+    .result-text {
+      font-family: 'Nanum Pen Script', cursive;
+      font-size: clamp(16px, 1.8vw, 24px);
       line-height: 1.9;
       color: #333;
+      white-space: pre-wrap;
     }
-    .result-text-area::-webkit-scrollbar {
-      width: 4px;
-    }
-    .result-text-area::-webkit-scrollbar-thumb {
-      background: #ccc;
-      border-radius: 4px;
-    }
-
-    .result-section {
-      margin-bottom: 16px;
-    }
-    .result-section-label {
-      font-weight: 900;
-      font-size: clamp(12px, 1.3vw, 16px);
-      margin-bottom: 4px;
-      color: #222;
-    }
-    .result-section-text {
-      font-size: clamp(11px, 1.15vw, 14px);
-      line-height: 1.8;
-      color: #444;
-    }
-
-    /* Copy button per section */
-    .copy-btn {
+    .copy-one {
       display: inline-block;
       margin-top: 4px;
       padding: 3px 10px;
       border: 1px solid #ccc;
       border-radius: 4px;
       background: rgba(255,255,255,0.7);
-      font-family: inherit;
+      font-family: 'Noto Sans KR', sans-serif;
       font-size: clamp(9px, 0.9vw, 12px);
       color: #888;
       cursor: pointer;
       transition: all 0.2s;
     }
-    .copy-btn:hover {
-      border-color: #222;
-      color: #222;
-    }
-    .copy-btn.copied {
-      background: #222;
-      color: #fff;
-      border-color: #222;
-    }
+    .copy-one:hover { border-color: #222; color: #222; }
+    .copy-one.copied { background: #222; color: #fff; border-color: #222; }
 
-    /* Action buttons on result page */
     .result-actions {
       position: absolute;
       bottom: 3%;
@@ -259,105 +226,17 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-    .action-btn.primary {
-      background: #222;
-      color: #fff;
-    }
-    .action-btn.secondary {
-      background: transparent;
-      color: #222;
-    }
-    .action-btn:hover {
-      transform: scale(1.03);
-    }
+    .action-btn.primary { background: #222; color: #fff; }
+    .action-btn.secondary { background: rgba(255,255,255,0.8); color: #222; }
+    .action-btn:hover { transform: scale(1.03); }
 
-    /* Loading state */
-    .loading-overlay {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(241, 238, 227, 0.85);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      z-index: 20;
-    }
-    .loading-overlay.active {
-      display: flex;
-    }
-    .loading-icon {
-      font-size: clamp(40px, 5vw, 64px);
-      animation: tumble 1s ease-in-out infinite;
-    }
-    @keyframes tumble {
-      0%, 100% { transform: rotate(0deg) scale(1); }
-      25% { transform: rotate(15deg) scale(1.05); }
-      75% { transform: rotate(-15deg) scale(1.05); }
-    }
-    .loading-text {
-      margin-top: 12px;
-      font-weight: 700;
-      font-size: clamp(14px, 1.5vw, 20px);
-      color: #222;
-    }
-    .loading-sub {
-      margin-top: 6px;
-      font-size: clamp(11px, 1.1vw, 14px);
-      color: #888;
-    }
-
-    /* Transition */
-    .page {
-      animation: fadeIn 0.4s ease-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Mobile adjustments */
-    @media (max-width: 768px) {
-      .page {
-        aspect-ratio: auto;
-        min-height: 100vh;
-        background-size: cover;
-        background-position: top center;
-      }
-      .page img {
-        object-fit: cover;
-        min-height: 100vh;
-      }
-      .input-textarea {
-        top: 28%;
-        left: 10%;
-        width: 80%;
-        height: 50%;
-      }
-      .type-pills {
-        top: 2%;
-        right: 3%;
-        left: 3%;
-        justify-content: center;
-      }
-      .result-text-area {
-        top: 20%;
-        left: 8%;
-        width: 84%;
-        height: 58%;
-      }
-      .lang-toggle {
-        top: 8px;
-        right: 8px;
-      }
-    }
-
-    /* Error toast */
+    /* Toast */
     .toast {
       position: fixed;
       bottom: 24px;
       left: 50%;
       transform: translateX(-50%) translateY(100px);
-      background: #DC2626;
+      background: #222;
       color: white;
       padding: 12px 24px;
       border-radius: 12px;
@@ -367,111 +246,236 @@
       transition: transform 0.3s ease;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
-    .toast.show {
-      transform: translateX(-50%) translateY(0);
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* Fade in */
+    .page.active { animation: fadeIn 0.35s ease-out; }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .input-wrap { top: 24%; left: 6%; width: 88%; height: 62%; }
+      .memo-lines { top: 24%; left: 6%; width: 88%; height: 62%; }
+      .result-wrap { top: 18%; left: 6%; width: 88%; height: 62%; }
+      .landing-click { bottom: 12%; right: 10%; width: 30%; height: 10%; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Language toggle -->
   <div class="lang-toggle">
     <button class="lang-btn active" data-lang="kr">한</button>
     <button class="lang-btn" data-lang="en">EN</button>
   </div>
 
-  <!-- Page 1: Landing (Korean) -->
+  <!-- Landing KR -->
   <div class="page active" id="landing-kr">
-    <img src="/img/landing-kr.png" alt="Best Regards - 연차·반차·이직 사유, 말할 수 있게 만들어드립니다">
-    <div class="overlay landing-btn-area" id="startBtnKr"></div>
+    <img class="bg" src="/img/landing-kr.png" alt="Best Regards">
+    <div class="landing-click" id="startKr"></div>
   </div>
 
-  <!-- Page 1: Landing (English) -->
+  <!-- Landing EN -->
   <div class="page" id="landing-en">
-    <img src="/img/landing-en.png" alt="Best Regards - Leave & resignation excuses, made presentable">
-    <div class="overlay landing-btn-area" id="startBtnEn"></div>
+    <img class="bg" src="/img/landing-en.png" alt="Best Regards">
+    <div class="landing-click" id="startEn"></div>
   </div>
 
-  <!-- Page 2: Input (Korean) -->
+  <!-- Input KR -->
   <div class="page" id="input-kr">
-    <img src="/img/input-kr.png" alt="상황을 기입해주세요">
-    <div class="type-pills" id="typePillsKr">
-      <button class="type-pill active" data-type="연차">연차</button>
-      <button class="type-pill" data-type="반차">반차</button>
-      <button class="type-pill" data-type="이직">이직</button>
-      <button class="type-pill" data-type="지각">지각</button>
-      <button class="type-pill" data-type="조퇴">조퇴</button>
+    <img class="bg" src="/img/input-kr.png" alt="상황을 기입해주세요">
+    <div class="memo-lines"></div>
+    <div class="input-wrap">
+      <div class="type-row" id="typePillsKr">
+        <button class="type-pill active" data-type="연차">연차</button>
+        <button class="type-pill" data-type="반차">반차</button>
+        <button class="type-pill" data-type="이직">이직</button>
+        <button class="type-pill" data-type="지각">지각</button>
+        <button class="type-pill" data-type="조퇴">조퇴</button>
+      </div>
+      <textarea class="memo-textarea" id="inputKr" placeholder="여기에 상황을 적어주세요..."></textarea>
     </div>
-    <textarea class="input-textarea" id="inputKr" placeholder="예: 내일 걍 쉬고 싶은데 피곤해서..."></textarea>
-    <div class="submit-area">
+    <div class="submit-float">
       <button class="submit-btn" id="submitKr" disabled>사유 만들기</button>
     </div>
-    <div class="loading-overlay" id="loadingKr">
-      <div class="loading-icon">🫧</div>
-      <div class="loading-text">품격을 입히는 중...</div>
-      <div class="loading-sub">잠시만 기다려주세요</div>
-    </div>
   </div>
 
-  <!-- Page 2: Input (English) -->
+  <!-- Input EN -->
   <div class="page" id="input-en">
-    <img src="/img/input-en.png" alt="Please share your situation">
-    <div class="type-pills" id="typePillsEn">
-      <button class="type-pill active" data-type="연차">Leave</button>
-      <button class="type-pill" data-type="반차">Half-day</button>
-      <button class="type-pill" data-type="이직">Resign</button>
-      <button class="type-pill" data-type="지각">Late</button>
-      <button class="type-pill" data-type="조퇴">Early out</button>
+    <img class="bg" src="/img/input-en.png" alt="Please share your situation">
+    <div class="memo-lines"></div>
+    <div class="input-wrap">
+      <div class="type-row" id="typePillsEn">
+        <button class="type-pill active" data-type="연차">Leave</button>
+        <button class="type-pill" data-type="반차">Half-day</button>
+        <button class="type-pill" data-type="이직">Resign</button>
+        <button class="type-pill" data-type="지각">Late</button>
+        <button class="type-pill" data-type="조퇴">Early out</button>
+      </div>
+      <textarea class="memo-textarea" id="inputEn" placeholder="Write your situation here..."></textarea>
     </div>
-    <textarea class="input-textarea" id="inputEn" placeholder="e.g. I just really don't want to come in tomorrow..."></textarea>
-    <div class="submit-area">
+    <div class="submit-float">
       <button class="submit-btn" id="submitEn" disabled>Polish my excuse</button>
     </div>
-    <div class="loading-overlay" id="loadingEn">
-      <div class="loading-icon">🫧</div>
-      <div class="loading-text">Adding some class...</div>
-      <div class="loading-sub">Just a moment</div>
-    </div>
   </div>
 
-  <!-- Page 3: Result (Korean) -->
+  <!-- Result KR -->
   <div class="page" id="result-kr">
-    <img src="/img/result-kr.png" alt="아래와 같이 확인을 부탁드립니다">
-    <div class="result-text-area" id="resultTextKr"></div>
+    <img class="bg" src="/img/result-kr.png" alt="아래와 같이 확인을 부탁드립니다">
+    <div class="result-wrap" id="resultKr"></div>
     <div class="result-actions">
       <button class="action-btn secondary" id="retryKr">다시 하기</button>
       <button class="action-btn primary" id="copyAllKr">전체 복사</button>
     </div>
   </div>
 
-  <!-- Page 3: Result (English) -->
+  <!-- Result EN -->
   <div class="page" id="result-en">
-    <img src="/img/result-en.png" alt="Please find below">
-    <div class="result-text-area" id="resultTextEn"></div>
+    <img class="bg" src="/img/result-en.png" alt="Please find below">
+    <div class="result-wrap" id="resultEn"></div>
     <div class="result-actions">
       <button class="action-btn secondary" id="retryEn">Try again</button>
       <button class="action-btn primary" id="copyAllEn">Copy all</button>
     </div>
   </div>
 
-  <!-- Toast -->
   <div class="toast" id="toast"></div>
 
   <script>
-    // State
+    // =====================
+    // TEMPLATE ENGINE
+    // =====================
+    const templates = {
+      연차: {
+        keywords: {
+          피곤: '개인 컨디션 관리',
+          아프: '건강상의 사유',
+          병원: '병원 진료 예약',
+          검진: '건강검진 수검',
+          이사: '이사 및 주거지 이전',
+          결혼: '경조사 관련',
+          여행: '개인 일정 소화',
+          쉬고: '개인 휴식 및 재충전',
+          집: '주거 관련 사유',
+          관공서: '관공서 업무 처리',
+          은행: '금융 업무 처리',
+          가족: '가족 관련 일정',
+          아이: '자녀 돌봄',
+          학교: '학교 관련 일정',
+          비자: '비자/행정 업무 처리',
+          대사관: '대사관 방문',
+        },
+        formal: (reason) => `금일 연차를 사용하고자 합니다. 사유는 ${reason}이며, 업무 인수인계는 완료하였습니다. 검토 부탁드립니다.`,
+        normal: (reason) => `${reason}(으)로 인해 연차 사용 예정입니다. 급한 건은 메신저로 연락 부탁드립니다.`,
+        casual: (reason) => `${reason} 관련으로 하루 연차 쓰겠습니다! 급한 건 연락 주세요.`,
+        fallbackReason: '개인 사유',
+      },
+      반차: {
+        keywords: {
+          병원: '병원 진료',
+          치과: '치과 진료',
+          은행: '은행 업무',
+          관공서: '관공서 방문',
+          택배: '배송 관련 수령',
+          아이: '자녀 관련 일정',
+          오전: '오전 개인 일정',
+          오후: '오후 개인 일정',
+          점심: '개인 일정',
+          피곤: '컨디션 관리',
+          아프: '건강 관리',
+          가족: '가족 일정',
+        },
+        formal: (reason) => `${reason}(으)로 반차를 사용하고자 합니다. 나머지 근무 시간에는 정상 출근하겠습니다. 승인 부탁드립니다.`,
+        normal: (reason) => `${reason} 때문에 반차 사용 예정입니다. 이후 정상 근무하겠습니다.`,
+        casual: (reason) => `${reason} 건으로 반차 쓸게요! 나머지 시간은 정상 근무합니다.`,
+        fallbackReason: '개인 사유',
+      },
+      이직: {
+        keywords: {
+          연봉: '더 나은 처우와 성장 기회',
+          돈: '커리어 성장과 새로운 도전',
+          싫: '새로운 환경에서의 도전',
+          성장: '전문성 심화 및 커리어 발전',
+          배울: '새로운 분야로의 도전',
+          환경: '업무 환경 변화 추구',
+          옮기: '새로운 기회 탐색',
+          분위기: '업무 환경 전환',
+        },
+        formal: (reason) => `그동안 많은 것을 배우고 성장할 수 있었습니다. 깊이 감사드리며, ${reason}을(를) 위해 새로운 도전을 하고자 합니다. 남은 기간 인수인계에 최선을 다하겠습니다.`,
+        normal: (reason) => `좋은 동료분들과 함께해서 정말 감사했습니다. ${reason}을(를) 위해 이직을 결정하게 되었습니다. 원활한 인수인계를 위해 최선을 다하겠습니다.`,
+        casual: (reason) => `함께해서 정말 좋았습니다! ${reason}을(를) 위해 새로운 곳으로 가게 되었어요. 앞으로도 좋은 인연 이어갔으면 합니다.`,
+        fallbackReason: '개인적인 커리어 발전',
+      },
+      지각: {
+        keywords: {
+          늦잠: '기상 시간 지연',
+          알람: '기상 알람 오작동',
+          지하철: '대중교통 지연',
+          버스: '대중교통 운행 지연',
+          교통: '교통 상황 악화',
+          사고: '도로 교통사고로 인한 정체',
+          길: '예상치 못한 교통 정체',
+          아파: '갑작스러운 컨디션 저하',
+          비: '기상 악화로 인한 교통 지연',
+          눈: '기상 악화로 인한 이동 지연',
+        },
+        formal: (reason) => `금일 ${reason}(으)로 출근이 지연되었습니다. 대단히 죄송합니다. 이후 업무에 차질 없도록 하겠습니다.`,
+        normal: (reason) => `${reason}(으)로 늦었습니다. 죄송합니다, 바로 업무 시작하겠습니다.`,
+        casual: (reason) => `${reason} 때문에 늦었습니다 ㅠ 죄송해요, 바로 투입합니다!`,
+        fallbackReason: '예상치 못한 사정',
+      },
+      조퇴: {
+        keywords: {
+          아파: '건강 상태 악화',
+          머리: '심한 두통 발생',
+          열: '발열 증상',
+          병원: '긴급 병원 방문',
+          집: '긴급 주거 관련 사안',
+          아이: '자녀 긴급 돌봄',
+          가족: '긴급 가족 사안',
+          어린이집: '자녀 긴급 하원',
+          학교: '자녀 학교 관련 긴급 연락',
+        },
+        formal: (reason) => `${reason}(으)로 금일 조퇴를 요청드립니다. 잔여 업무는 정리 후 퇴근하겠으며, 내일 정상 출근하겠습니다. 양해 부탁드립니다.`,
+        normal: (reason) => `${reason}(으)로 조퇴하겠습니다. 급한 업무는 정리해두었습니다.`,
+        casual: (reason) => `${reason} 때문에 먼저 들어가겠습니다! 급한 건 메신저 남겨주세요.`,
+        fallbackReason: '갑작스러운 개인 사정',
+      },
+    };
+
+    function generateExcuse(type, rawInput) {
+      const t = templates[type];
+      if (!t) return null;
+
+      // Find matching keyword
+      let reason = t.fallbackReason;
+      for (const [keyword, polished] of Object.entries(t.keywords)) {
+        if (rawInput.includes(keyword)) {
+          reason = polished;
+          break;
+        }
+      }
+
+      return {
+        formal: t.formal(reason),
+        normal: t.normal(reason),
+        casual: t.casual(reason),
+      };
+    }
+
+    // =====================
+    // APP LOGIC
+    // =====================
     let lang = 'kr';
     let selectedType = '연차';
     let currentResult = '';
 
-    // Elements
-    const pages = {
-      'landing-kr': document.getElementById('landing-kr'),
-      'landing-en': document.getElementById('landing-en'),
-      'input-kr': document.getElementById('input-kr'),
-      'input-en': document.getElementById('input-en'),
-      'result-kr': document.getElementById('result-kr'),
-      'result-en': document.getElementById('result-en'),
-    };
+    const pages = {};
+    ['landing-kr','landing-en','input-kr','input-en','result-kr','result-en'].forEach(id => {
+      pages[id] = document.getElementById(id);
+    });
 
     function showPage(name) {
       Object.values(pages).forEach(p => p.classList.remove('active'));
@@ -484,39 +488,35 @@
         document.querySelector('.lang-btn.active').classList.remove('active');
         btn.classList.add('active');
         lang = btn.dataset.lang;
-
-        // Find current page type and switch language
-        const activePage = document.querySelector('.page.active');
-        const id = activePage.id;
-        const pageType = id.replace('-kr', '').replace('-en', '');
-        showPage(pageType + '-' + lang);
+        const active = document.querySelector('.page.active').id;
+        const base = active.replace('-kr','').replace('-en','');
+        showPage(base + '-' + lang);
       });
     });
 
     // Landing -> Input
-    document.getElementById('startBtnKr').addEventListener('click', () => showPage('input-kr'));
-    document.getElementById('startBtnEn').addEventListener('click', () => showPage('input-en'));
+    document.getElementById('startKr').addEventListener('click', () => showPage('input-kr'));
+    document.getElementById('startEn').addEventListener('click', () => showPage('input-en'));
 
     // Type pills
-    function setupTypePills(containerId) {
-      document.getElementById(containerId).querySelectorAll('.type-pill').forEach(pill => {
+    function setupPills(id) {
+      document.getElementById(id).querySelectorAll('.type-pill').forEach(pill => {
         pill.addEventListener('click', () => {
-          pill.parentElement.querySelector('.type-pill.active').classList.remove('active');
+          pill.parentElement.querySelector('.active').classList.remove('active');
           pill.classList.add('active');
           selectedType = pill.dataset.type;
-
-          // Sync both language pill selectors
-          const otherContainer = containerId === 'typePillsKr' ? 'typePillsEn' : 'typePillsKr';
-          document.getElementById(otherContainer).querySelectorAll('.type-pill').forEach(p => {
+          // Sync other lang pills
+          const other = id === 'typePillsKr' ? 'typePillsEn' : 'typePillsKr';
+          document.getElementById(other).querySelectorAll('.type-pill').forEach(p => {
             p.classList.toggle('active', p.dataset.type === selectedType);
           });
         });
       });
     }
-    setupTypePills('typePillsKr');
-    setupTypePills('typePillsEn');
+    setupPills('typePillsKr');
+    setupPills('typePillsEn');
 
-    // Input validation
+    // Input sync & validation
     const inputKr = document.getElementById('inputKr');
     const inputEn = document.getElementById('inputEn');
     const submitKr = document.getElementById('submitKr');
@@ -524,152 +524,83 @@
 
     inputKr.addEventListener('input', () => {
       submitKr.disabled = !inputKr.value.trim();
-      inputEn.value = inputKr.value; // sync
+      inputEn.value = inputKr.value;
+      submitEn.disabled = submitKr.disabled;
     });
     inputEn.addEventListener('input', () => {
       submitEn.disabled = !inputEn.value.trim();
-      inputKr.value = inputEn.value; // sync
+      inputKr.value = inputEn.value;
+      submitKr.disabled = submitEn.disabled;
     });
 
-    // Loading messages
-    const loadingMsgs = {
-      kr: [
-        { icon: '🫧', text: '품격을 입히는 중...', sub: '잠시만 기다려주세요' },
-        { icon: '🌀', text: '불필요한 TMI 제거 중...', sub: '핵심만 남깁니다' },
-        { icon: '✨', text: '다림질 중...', sub: '주름 하나 없이 펴드릴게요' },
-      ],
-      en: [
-        { icon: '🫧', text: 'Adding some class...', sub: 'Just a moment' },
-        { icon: '🌀', text: 'Removing the TMI...', sub: 'Keeping it professional' },
-        { icon: '✨', text: 'Ironing out the wrinkles...', sub: 'Almost there' },
-      ],
-    };
-
     // Submit
-    async function handleSubmit() {
+    function handleSubmit() {
       const situation = (lang === 'kr' ? inputKr : inputEn).value.trim();
       if (!situation) return;
 
-      const loadingEl = document.getElementById(lang === 'kr' ? 'loadingKr' : 'loadingEn');
-      loadingEl.classList.add('active');
+      const result = generateExcuse(selectedType, situation);
+      if (!result) return;
 
-      // Cycle loading messages
-      let msgIdx = 0;
-      const msgs = loadingMsgs[lang];
-      const msgInterval = setInterval(() => {
-        msgIdx = (msgIdx + 1) % msgs.length;
-        loadingEl.querySelector('.loading-icon').textContent = msgs[msgIdx].icon;
-        loadingEl.querySelector('.loading-text').textContent = msgs[msgIdx].text;
-        loadingEl.querySelector('.loading-sub').textContent = msgs[msgIdx].sub;
-      }, 2000);
+      const labels = {
+        formal: { kr: '🎩 격식체', en: '🎩 Formal' },
+        normal: { kr: '😊 무난체', en: '😊 Standard' },
+        casual: { kr: '😎 캐주얼체', en: '😎 Casual' },
+      };
 
-      try {
-        const res = await fetch('/api/generate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: selectedType, situation }),
-        });
+      currentResult = `${labels.formal[lang]}\n${result.formal}\n\n${labels.normal[lang]}\n${result.normal}\n\n${labels.casual[lang]}\n${result.casual}`;
 
-        clearInterval(msgInterval);
-        loadingEl.classList.remove('active');
+      const html = ['formal','normal','casual'].map(tone => `
+        <div class="result-section">
+          <div class="result-label">${labels[tone][lang]}</div>
+          <div class="result-text">${result[tone]}</div>
+          <button class="copy-one" onclick="copyOne(this)">복사</button>
+        </div>
+      `).join('');
 
-        if (!res.ok) throw new Error('API error');
-        const data = await res.json();
-        currentResult = data.result;
-        displayResult(data.result);
-        showPage('result-' + lang);
-      } catch (err) {
-        clearInterval(msgInterval);
-        loadingEl.classList.remove('active');
-        showToast(lang === 'kr' ? '오류가 발생했습니다. 다시 시도해주세요.' : 'Something went wrong. Please try again.');
-      }
+      document.getElementById('resultKr').innerHTML = html;
+      document.getElementById('resultEn').innerHTML = html;
+
+      showPage('result-' + lang);
     }
 
     submitKr.addEventListener('click', handleSubmit);
     submitEn.addEventListener('click', handleSubmit);
-
-    // Also submit on Enter (Ctrl+Enter)
-    [inputKr, inputEn].forEach(input => {
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-          handleSubmit();
-        }
+    [inputKr, inputEn].forEach(el => {
+      el.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) handleSubmit();
       });
     });
 
-    // Display result
-    function displayResult(text) {
-      // Parse sections by numbered labels
-      const sections = text.split(/(?=(?:1\.|2\.|3\.)\s*(?:🎩|😊|😎))/);
-      const html = sections
-        .map(s => s.trim())
-        .filter(s => s.length > 0)
-        .map(s => {
-          // Extract label and content
-          const lines = s.split('\n');
-          const label = lines[0];
-          const content = lines.slice(1).join('\n').trim();
-          return `
-            <div class="result-section">
-              <div class="result-section-label">${label}</div>
-              <div class="result-section-text">${content || ''}</div>
-              <button class="copy-btn" onclick="copySingle(this)">복사</button>
-            </div>
-          `;
-        })
-        .join('');
-
-      document.getElementById('resultTextKr').innerHTML = html;
-      document.getElementById('resultTextEn').innerHTML = html;
-    }
-
-    // Copy single section
-    window.copySingle = function(btn) {
-      const text = btn.parentElement.querySelector('.result-section-text').textContent;
+    // Copy
+    window.copyOne = function(btn) {
+      const text = btn.parentElement.querySelector('.result-text').textContent;
       navigator.clipboard.writeText(text).then(() => {
-        btn.textContent = '✓';
+        btn.textContent = '✓ 복사됨';
         btn.classList.add('copied');
-        setTimeout(() => {
-          btn.textContent = '복사';
-          btn.classList.remove('copied');
-        }, 2000);
+        setTimeout(() => { btn.textContent = '복사'; btn.classList.remove('copied'); }, 2000);
       });
     };
-
-    // Copy all
     document.getElementById('copyAllKr').addEventListener('click', () => {
-      navigator.clipboard.writeText(currentResult).then(() => {
-        showToast('전체 복사 완료!');
-      });
+      navigator.clipboard.writeText(currentResult).then(() => showToast('전체 복사 완료!'));
     });
     document.getElementById('copyAllEn').addEventListener('click', () => {
-      navigator.clipboard.writeText(currentResult).then(() => {
-        showToast('Copied to clipboard!');
-      });
+      navigator.clipboard.writeText(currentResult).then(() => showToast('Copied!'));
     });
 
     // Retry
-    document.getElementById('retryKr').addEventListener('click', () => {
-      inputKr.value = '';
-      inputEn.value = '';
-      submitKr.disabled = true;
-      submitEn.disabled = true;
-      showPage('input-kr');
-    });
-    document.getElementById('retryEn').addEventListener('click', () => {
-      inputKr.value = '';
-      inputEn.value = '';
-      submitKr.disabled = true;
-      submitEn.disabled = true;
-      showPage('input-en');
-    });
+    document.getElementById('retryKr').addEventListener('click', () => { resetInput(); showPage('input-kr'); });
+    document.getElementById('retryEn').addEventListener('click', () => { resetInput(); showPage('input-en'); });
+    function resetInput() {
+      inputKr.value = ''; inputEn.value = '';
+      submitKr.disabled = true; submitEn.disabled = true;
+    }
 
     // Toast
     function showToast(msg) {
-      const toast = document.getElementById('toast');
-      toast.textContent = msg;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2500);
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2500);
     }
   </script>
 </body>

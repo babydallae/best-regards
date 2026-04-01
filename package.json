@@ -1,11 +1,5 @@
 {
-  "name": "leave-polisher",
+  "name": "best-regards",
   "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "dev": "vercel dev"
-  },
-  "dependencies": {
-    "@anthropic-ai/sdk": "^0.39.0"
-  }
+  "private": true
 }
