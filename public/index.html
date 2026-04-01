@@ -10,13 +10,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Nanum+Pen+Script&family=Special+Elite&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
       font-family: 'Noto Sans KR', sans-serif;
       background: #F1EEE3;
       overflow-x: hidden;
     }
 
+    /* Page system */
     .page {
       position: relative;
       width: 100%;
@@ -25,242 +25,171 @@
       display: none;
     }
     .page.active { display: block; }
-    .page > .bg {
-      width: 100%;
-      display: block;
-    }
+    .page > .bg { width: 100%; display: block; }
 
     /* Language toggle */
     .lang-toggle {
-      position: fixed;
-      top: 16px;
-      right: 16px;
-      z-index: 100;
-      display: flex;
-      gap: 4px;
-      background: rgba(255,255,255,0.85);
-      backdrop-filter: blur(8px);
-      border-radius: 100px;
-      padding: 4px;
+      position: fixed; top: 16px; right: 16px; z-index: 100;
+      display: flex; gap: 4px;
+      background: rgba(255,255,255,0.85); backdrop-filter: blur(8px);
+      border-radius: 100px; padding: 4px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     .lang-btn {
-      padding: 6px 14px;
-      border: none;
-      border-radius: 100px;
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      background: transparent;
-      color: #888;
-      transition: all 0.2s;
+      padding: 6px 14px; border: none; border-radius: 100px;
+      font-family: inherit; font-size: 13px; font-weight: 700;
+      cursor: pointer; background: transparent; color: #888; transition: all 0.2s;
     }
     .lang-btn.active { background: #222; color: #fff; }
 
-    /* ===== LANDING PAGE ===== */
-    .landing-click {
+    /* ===== LANDING ===== */
+    .landing-text {
       position: absolute;
-      bottom: 15%;
-      right: 15%;
-      width: 24%;
-      height: 12%;
-      cursor: pointer;
-      z-index: 10;
+      top: 52%; left: 50%;
+      transform: translate(-20%, -10%);
+      text-align: center;
     }
+    .landing-sub {
+      font-size: clamp(12px, 1.3vw, 17px);
+      color: #555; margin-bottom: 20px; line-height: 1.6;
+    }
+    .landing-cta {
+      display: inline-block;
+      padding: 10px 32px;
+      border: 2px solid #222; border-radius: 4px;
+      background: #fff; color: #222;
+      font-family: inherit; font-size: clamp(12px, 1.2vw, 16px); font-weight: 700;
+      cursor: pointer; transition: all 0.2s;
+      text-decoration: none;
+    }
+    .landing-cta:hover { background: #222; color: #fff; }
 
     /* ===== INPUT PAGE ===== */
+    .input-title {
+      position: absolute;
+      top: 3%; left: 0; width: 100%;
+      text-align: center;
+      font-size: clamp(18px, 2.8vw, 36px);
+      font-weight: 900; color: #222;
+    }
+    .input-subtitle {
+      position: absolute;
+      top: 11%; left: 0; width: 100%;
+      text-align: center;
+      font-size: clamp(10px, 1.1vw, 14px);
+      color: #999;
+    }
+
     .input-wrap {
       position: absolute;
-      /* Positioned over the memo paper area */
-      top: 22%;
-      left: 13%;
-      width: 74%;
-      height: 68%;
+      top: 22%; left: 20%; width: 60%; height: 64%;
       z-index: 10;
-      display: flex;
-      flex-direction: column;
+      display: flex; flex-direction: column;
     }
     .type-row {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
+      display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap;
     }
     .type-pill {
-      padding: 5px 14px;
-      border: 2px solid rgba(0,0,0,0.15);
-      border-radius: 100px;
+      padding: 5px 14px; border: 2px solid rgba(0,0,0,0.12); border-radius: 100px;
       background: rgba(255,255,255,0.6);
-      font-family: inherit;
-      font-size: clamp(10px, 1.1vw, 14px);
-      font-weight: 700;
-      color: #666;
-      cursor: pointer;
-      transition: all 0.2s;
-      white-space: nowrap;
+      font-family: inherit; font-size: clamp(10px, 1.1vw, 14px); font-weight: 700;
+      color: #666; cursor: pointer; transition: all 0.2s; white-space: nowrap;
     }
     .type-pill:hover { border-color: #222; color: #222; }
     .type-pill.active { background: #222; border-color: #222; color: #fff; }
 
-    /* Handwriting textarea on memo */
     .memo-textarea {
-      flex: 1;
-      width: 100%;
-      background: transparent;
-      border: none;
-      outline: none;
-      resize: none;
+      flex: 1; width: 100%;
+      background: transparent; border: none; outline: none; resize: none;
       font-family: 'Nanum Pen Script', cursive;
-      font-size: clamp(18px, 2.2vw, 28px);
-      line-height: 2;
-      color: #2a2a2a;
-      padding: 8px 4px;
-      caret-color: #333;
+      font-size: clamp(20px, 2.4vw, 30px);
+      line-height: 2; color: #2a2a2a;
+      padding: 4px 8px; caret-color: #333;
     }
-    .memo-textarea::placeholder {
-      color: #b5a89a;
-      font-family: 'Nanum Pen Script', cursive;
-    }
-    /* Ruled lines effect */
-    .memo-lines {
-      position: absolute;
-      top: 22%;
-      left: 13%;
-      width: 74%;
-      height: 68%;
-      pointer-events: none;
-      z-index: 9;
-      background-image: repeating-linear-gradient(
-        transparent,
-        transparent calc(2em * 2 - 1px),
-        rgba(0,0,0,0.05) calc(2em * 2 - 1px),
-        rgba(0,0,0,0.05) calc(2em * 2)
-      );
-      background-size: 100% calc(clamp(18px, 2.2vw, 28px) * 2);
-      background-position: 0 calc(8px + clamp(18px, 2.2vw, 28px) * 2 - 1px);
-    }
+    .memo-textarea::placeholder { color: #c0b5a8; }
 
     .submit-float {
-      position: absolute;
-      bottom: 4%;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
+      position: absolute; bottom: 4%; left: 50%;
+      transform: translateX(-50%); z-index: 10;
     }
     .submit-btn {
-      padding: 10px 36px;
-      border: 2px solid #222;
-      border-radius: 100px;
-      background: #222;
-      color: #fff;
-      font-family: inherit;
-      font-size: clamp(12px, 1.2vw, 16px);
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s;
+      padding: 10px 36px; border: 2px solid #222; border-radius: 4px;
+      background: #222; color: #fff;
+      font-family: inherit; font-size: clamp(12px, 1.2vw, 16px); font-weight: 700;
+      cursor: pointer; transition: all 0.2s;
     }
-    .submit-btn:hover:not(:disabled) { background: #444; transform: scale(1.03); }
-    .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .submit-btn:hover:not(:disabled) { background: #444; }
+    .submit-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
     /* ===== RESULT PAGE ===== */
+    .result-title {
+      position: absolute;
+      top: 3%; left: 0; width: 100%;
+      text-align: center;
+      font-size: clamp(16px, 2.4vw, 32px);
+      font-weight: 900; color: #222;
+    }
+
     .result-wrap {
       position: absolute;
-      top: 17%;
-      left: 18%;
-      width: 56%;
-      height: 70%;
-      z-index: 10;
-      overflow-y: auto;
-      padding: 2% 3%;
+      top: 15%; left: 22%; width: 52%; height: 72%;
+      z-index: 10; overflow-y: auto; padding: 2% 3%;
     }
     .result-wrap::-webkit-scrollbar { width: 4px; }
     .result-wrap::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
 
-    .result-section { margin-bottom: 20px; }
+    .result-section { margin-bottom: 22px; }
     .result-label {
-      font-weight: 900;
-      font-size: clamp(12px, 1.2vw, 15px);
-      color: #222;
-      margin-bottom: 6px;
+      font-weight: 900; font-size: clamp(11px, 1.1vw, 14px);
+      color: #999; margin-bottom: 6px; letter-spacing: 0.5px;
     }
     .result-text {
       font-family: 'Nanum Pen Script', cursive;
-      font-size: clamp(16px, 1.8vw, 24px);
-      line-height: 1.9;
-      color: #333;
-      white-space: pre-wrap;
+      font-size: clamp(18px, 2vw, 26px);
+      line-height: 1.9; color: #222; white-space: pre-wrap;
     }
     .copy-one {
-      display: inline-block;
-      margin-top: 4px;
-      padding: 3px 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      display: inline-block; margin-top: 6px;
+      padding: 3px 12px; border: 1px solid #ccc; border-radius: 4px;
       background: rgba(255,255,255,0.7);
-      font-family: 'Noto Sans KR', sans-serif;
-      font-size: clamp(9px, 0.9vw, 12px);
-      color: #888;
-      cursor: pointer;
-      transition: all 0.2s;
+      font-family: 'Noto Sans KR', sans-serif; font-size: clamp(9px, 0.9vw, 12px);
+      color: #888; cursor: pointer; transition: all 0.2s;
     }
     .copy-one:hover { border-color: #222; color: #222; }
     .copy-one.copied { background: #222; color: #fff; border-color: #222; }
 
     .result-actions {
-      position: absolute;
-      bottom: 3%;
-      left: 50%;
+      position: absolute; bottom: 3%; left: 50%;
       transform: translateX(-50%);
-      display: flex;
-      gap: 10px;
-      z-index: 10;
+      display: flex; gap: 10px; z-index: 10;
     }
     .action-btn {
-      padding: 8px 24px;
-      border: 2px solid #222;
-      border-radius: 100px;
-      font-family: inherit;
-      font-size: clamp(11px, 1.1vw, 14px);
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s;
+      padding: 8px 24px; border: 2px solid #222; border-radius: 4px;
+      font-family: inherit; font-size: clamp(11px, 1.1vw, 14px); font-weight: 700;
+      cursor: pointer; transition: all 0.2s;
     }
     .action-btn.primary { background: #222; color: #fff; }
     .action-btn.secondary { background: rgba(255,255,255,0.8); color: #222; }
-    .action-btn:hover { transform: scale(1.03); }
+    .action-btn:hover { opacity: 0.85; }
 
     /* Toast */
     .toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
+      position: fixed; bottom: 24px; left: 50%;
       transform: translateX(-50%) translateY(100px);
-      background: #222;
-      color: white;
-      padding: 12px 24px;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 700;
-      z-index: 200;
+      background: #222; color: white;
+      padding: 12px 24px; border-radius: 8px;
+      font-size: 14px; font-weight: 700; z-index: 200;
       transition: transform 0.3s ease;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
     .toast.show { transform: translateX(-50%) translateY(0); }
 
-    /* Fade in */
     .page.active { animation: fadeIn 0.35s ease-out; }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    /* Mobile */
     @media (max-width: 768px) {
-      .input-wrap { top: 24%; left: 6%; width: 88%; height: 62%; }
-      .memo-lines { top: 24%; left: 6%; width: 88%; height: 62%; }
-      .result-wrap { top: 18%; left: 6%; width: 88%; height: 62%; }
-      .landing-click { bottom: 12%; right: 10%; width: 30%; height: 10%; }
+      .input-wrap { top: 22%; left: 8%; width: 84%; height: 60%; }
+      .result-wrap { top: 16%; left: 8%; width: 84%; height: 64%; }
+      .landing-text { transform: translate(-50%, 0); left: 50%; top: 58%; }
     }
   </style>
 </head>
@@ -273,20 +202,27 @@
 
   <!-- Landing KR -->
   <div class="page active" id="landing-kr">
-    <img class="bg" src="/img/landing-kr.png" alt="Best Regards">
-    <div class="landing-click" id="startKr"></div>
+    <img class="bg" src="/img/landing-kr-blank.png" alt="">
+    <div class="landing-text">
+      <div class="landing-sub">연차·반차·이직 사유, 말할 수 있게 만들어드립니다.</div>
+      <button class="landing-cta" id="startKr">사유 만들기</button>
+    </div>
   </div>
 
   <!-- Landing EN -->
   <div class="page" id="landing-en">
-    <img class="bg" src="/img/landing-en.png" alt="Best Regards">
-    <div class="landing-click" id="startEn"></div>
+    <img class="bg" src="/img/landing-en-blank.png" alt="">
+    <div class="landing-text">
+      <div class="landing-sub">Leave &amp; resignation excuses — made presentable.</div>
+      <button class="landing-cta" id="startEn">Polish my excuse</button>
+    </div>
   </div>
 
   <!-- Input KR -->
   <div class="page" id="input-kr">
-    <img class="bg" src="/img/input-kr.png" alt="상황을 기입해주세요">
-    <div class="memo-lines"></div>
+    <img class="bg" src="/img/input-kr-blank.png" alt="">
+    <div class="input-title">상황을 기입해주세요.</div>
+    <div class="input-subtitle">비밀은 지키겠습니다.</div>
     <div class="input-wrap">
       <div class="type-row" id="typePillsKr">
         <button class="type-pill active" data-type="연차">연차</button>
@@ -295,7 +231,7 @@
         <button class="type-pill" data-type="지각">지각</button>
         <button class="type-pill" data-type="조퇴">조퇴</button>
       </div>
-      <textarea class="memo-textarea" id="inputKr" placeholder="여기에 상황을 적어주세요..."></textarea>
+      <textarea class="memo-textarea" id="inputKr" placeholder="예: 그냥 쉬고 싶어요..."></textarea>
     </div>
     <div class="submit-float">
       <button class="submit-btn" id="submitKr" disabled>사유 만들기</button>
@@ -304,8 +240,9 @@
 
   <!-- Input EN -->
   <div class="page" id="input-en">
-    <img class="bg" src="/img/input-en.png" alt="Please share your situation">
-    <div class="memo-lines"></div>
+    <img class="bg" src="/img/input-en-blank.png" alt="">
+    <div class="input-title" style="font-family:'Special Elite',monospace;">Please share your situation.</div>
+    <div class="input-subtitle" style="font-family:'Special Elite',monospace;">This will be confidential.</div>
     <div class="input-wrap">
       <div class="type-row" id="typePillsEn">
         <button class="type-pill active" data-type="연차">Leave</button>
@@ -314,7 +251,7 @@
         <button class="type-pill" data-type="지각">Late</button>
         <button class="type-pill" data-type="조퇴">Early out</button>
       </div>
-      <textarea class="memo-textarea" id="inputEn" placeholder="Write your situation here..."></textarea>
+      <textarea class="memo-textarea" id="inputEn" placeholder="e.g. I just don't want to go in..."></textarea>
     </div>
     <div class="submit-float">
       <button class="submit-btn" id="submitEn" disabled>Polish my excuse</button>
@@ -323,7 +260,8 @@
 
   <!-- Result KR -->
   <div class="page" id="result-kr">
-    <img class="bg" src="/img/result-kr.png" alt="아래와 같이 확인을 부탁드립니다">
+    <img class="bg" src="/img/result-kr-blank.png" alt="">
+    <div class="result-title">아래와 같이 확인을 부탁드립니다.</div>
     <div class="result-wrap" id="resultKr"></div>
     <div class="result-actions">
       <button class="action-btn secondary" id="retryKr">다시 하기</button>
@@ -333,7 +271,8 @@
 
   <!-- Result EN -->
   <div class="page" id="result-en">
-    <img class="bg" src="/img/result-en.png" alt="Please find below">
+    <img class="bg" src="/img/result-en-blank.png" alt="">
+    <div class="result-title" style="font-family:'Special Elite',monospace;">Please find below;</div>
     <div class="result-wrap" id="resultEn"></div>
     <div class="result-actions">
       <button class="action-btn secondary" id="retryEn">Try again</button>
@@ -344,129 +283,242 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    // =====================
-    // TEMPLATE ENGINE
-    // =====================
-    const templates = {
-      연차: {
-        keywords: {
-          피곤: '개인 컨디션 관리',
-          아프: '건강상의 사유',
-          병원: '병원 진료 예약',
-          검진: '건강검진 수검',
-          이사: '이사 및 주거지 이전',
-          결혼: '경조사 관련',
-          여행: '개인 일정 소화',
-          쉬고: '개인 휴식 및 재충전',
-          집: '주거 관련 사유',
-          관공서: '관공서 업무 처리',
-          은행: '금융 업무 처리',
-          가족: '가족 관련 일정',
-          아이: '자녀 돌봄',
-          학교: '학교 관련 일정',
-          비자: '비자/행정 업무 처리',
-          대사관: '대사관 방문',
-        },
-        formal: (reason) => `금일 연차를 사용하고자 합니다. 사유는 ${reason}이며, 업무 인수인계는 완료하였습니다. 검토 부탁드립니다.`,
-        normal: (reason) => `${reason}(으)로 인해 연차 사용 예정입니다. 급한 건은 메신저로 연락 부탁드립니다.`,
-        casual: (reason) => `${reason} 관련으로 하루 연차 쓰겠습니다! 급한 건 연락 주세요.`,
-        fallbackReason: '개인 사유',
+    // =============================================
+    // TEMPLATE ENGINE — 진짜 회사에서 쓸 수 있는 버전
+    // =============================================
+    // 원칙: 진짜 이유를 절대 노출하지 않는다.
+    // "쉬고 싶다" → "개인 사유" (뻔하지만 실제로 가장 많이 씀)
+    // 키워드에 따라 적절한 커버 사유를 선택
+
+    function pickRandom(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function detectContext(input) {
+      const checks = [
+        { keys: ['병원','진료','검진','건강검진','수술'], ctx: 'hospital' },
+        { keys: ['치과','교정','스케일링'], ctx: 'dental' },
+        { keys: ['이사','입주','짐'], ctx: 'moving' },
+        { keys: ['결혼','웨딩','예식'], ctx: 'wedding' },
+        { keys: ['아이','아기','어린이집','유치원','등원','하원'], ctx: 'childcare' },
+        { keys: ['가족','부모님','어머니','아버지','어머님','아버님'], ctx: 'family' },
+        { keys: ['관공서','주민센터','구청','동사무소'], ctx: 'office' },
+        { keys: ['은행','금융','대출','서류'], ctx: 'bank' },
+        { keys: ['비자','여권','대사관'], ctx: 'visa' },
+        { keys: ['지하철','버스','교통','사고','막혀','막힘'], ctx: 'traffic' },
+        { keys: ['늦잠','알람','못 일어'], ctx: 'overslept' },
+        { keys: ['머리','두통','어지러','속 안 좋','토할','구역'], ctx: 'headache' },
+        { keys: ['열','감기','기침','콧물','목 아'], ctx: 'sick' },
+        { keys: ['아파','아프','몸살','컨디션'], ctx: 'unwell' },
+        { keys: ['연봉','돈','급여','처우'], ctx: 'salary' },
+        { keys: ['성장','배울','한계','답답'], ctx: 'growth' },
+        { keys: ['분위기','문화','상사','팀장','갈등'], ctx: 'culture' },
+      ];
+      for (const { keys, ctx } of checks) {
+        if (keys.some(k => input.includes(k))) return ctx;
+      }
+      return 'default';
+    }
+
+    const gen = {
+      연차: (ctx) => {
+        const base = {
+          hospital: {
+            formal: '사전 예약된 병원 진료 건으로 연차를 신청드립니다. 부재 중 업무는 사전 정리 완료하였습니다.',
+            normal: '병원 예약이 있어 연차 사용 예정입니다. 급한 건은 메신저로 연락 부탁드립니다.',
+            casual: '병원 예약 건으로 연차 쓰겠습니다. 급한 건 연락주세요!',
+          },
+          dental: {
+            formal: '치과 진료 예약 건으로 연차를 신청드립니다. 업무 인수인계는 완료하였습니다.',
+            normal: '치과 진료가 있어 연차 사용합니다. 급한 건은 메신저 남겨주세요.',
+            casual: '치과 가야 해서 연차 쓸게요. 급한 건 연락주세요!',
+          },
+          moving: {
+            formal: '주거지 이전 관련 일정으로 연차를 신청드립니다. 부재 중 업무는 사전 정리 완료하였습니다.',
+            normal: '이사 일정이 있어 연차 사용 예정입니다. 급한 건은 메신저로 부탁드립니다.',
+            casual: '이사 건으로 연차 쓰겠습니다!',
+          },
+          wedding: {
+            formal: '경조사 관련 일정으로 연차를 신청드립니다.',
+            normal: '경조사 일정이 있어 연차 사용합니다.',
+            casual: '경조사 건으로 연차 쓸게요!',
+          },
+          childcare: {
+            formal: '자녀 관련 일정으로 연차를 신청드립니다. 부재 중 업무는 정리 완료하였습니다.',
+            normal: '아이 관련 일정이 있어 연차 사용합니다. 급한 건 메신저 부탁드립니다.',
+            casual: '아이 건으로 연차 쓸게요!',
+          },
+          family: {
+            formal: '가정 사정으로 연차를 신청드립니다. 부재 중 업무는 사전 정리 완료하였습니다.',
+            normal: '집안 일정이 있어 연차 사용 예정입니다. 급한 건 메신저로 부탁드립니다.',
+            casual: '집안 일정으로 연차 쓰겠습니다. 급한 건 연락주세요!',
+          },
+          office: {
+            formal: '관공서 방문 일정으로 연차를 신청드립니다. 해당 업무가 평일에만 처리 가능하여 양해 부탁드립니다.',
+            normal: '관공서 처리할 일이 있어 연차 사용합니다.',
+            casual: '관공서 갈 일이 있어서 연차 쓸게요!',
+          },
+          bank: {
+            formal: '금융기관 방문 및 서류 처리를 위해 연차를 신청드립니다.',
+            normal: '은행 업무가 있어 연차 사용 예정입니다.',
+            casual: '은행 볼 일 있어서 연차 쓰겠습니다!',
+          },
+          visa: {
+            formal: '비자 관련 행정 업무 처리를 위해 연차를 신청드립니다.',
+            normal: '비자 관련 서류 처리 건으로 연차 사용합니다.',
+            casual: '비자 처리 건으로 연차 쓸게요!',
+          },
+        };
+        const generic = [
+          {
+            formal: '개인 사유로 연차를 신청드립니다. 부재 중 업무는 사전 정리 완료하였습니다. 검토 부탁드리겠습니다.',
+            normal: '개인 일정으로 연차 사용 예정입니다. 급한 건은 메신저로 연락 부탁드립니다.',
+            casual: '개인 사유로 연차 쓰겠습니다. 급한 건 연락주세요!',
+          },
+          {
+            formal: '개인 사정으로 연차 사용을 요청드립니다. 당일 업무는 사전 조율 완료하였습니다.',
+            normal: '개인 사정으로 연차 사용합니다. 급한 업무는 메신저로 남겨주세요.',
+            casual: '내일 개인 사정으로 연차 쓸게요. 급한 건 연락주세요!',
+          },
+        ];
+        return base[ctx] || pickRandom(generic);
       },
-      반차: {
-        keywords: {
-          병원: '병원 진료',
-          치과: '치과 진료',
-          은행: '은행 업무',
-          관공서: '관공서 방문',
-          택배: '배송 관련 수령',
-          아이: '자녀 관련 일정',
-          오전: '오전 개인 일정',
-          오후: '오후 개인 일정',
-          점심: '개인 일정',
-          피곤: '컨디션 관리',
-          아프: '건강 관리',
-          가족: '가족 일정',
-        },
-        formal: (reason) => `${reason}(으)로 반차를 사용하고자 합니다. 나머지 근무 시간에는 정상 출근하겠습니다. 승인 부탁드립니다.`,
-        normal: (reason) => `${reason} 때문에 반차 사용 예정입니다. 이후 정상 근무하겠습니다.`,
-        casual: (reason) => `${reason} 건으로 반차 쓸게요! 나머지 시간은 정상 근무합니다.`,
-        fallbackReason: '개인 사유',
+
+      반차: (ctx) => {
+        const base = {
+          hospital: {
+            formal: '병원 진료 예약 건으로 오전(오후) 반차를 신청드립니다. 나머지 시간은 정상 근무하겠습니다.',
+            normal: '병원 예약이 있어 반차 사용합니다. 이후 정상 근무 예정입니다.',
+            casual: '병원 가야 해서 반차 쓸게요. 이후 정상 출근합니다!',
+          },
+          dental: {
+            formal: '치과 진료 예약 건으로 반차를 신청드립니다.',
+            normal: '치과 예약이 있어 반차 사용합니다.',
+            casual: '치과 가야 해서 반차 쓸게요!',
+          },
+          bank: {
+            formal: '금융기관 방문을 위해 오전 반차를 신청드립니다. 이후 정상 출근하겠습니다.',
+            normal: '은행 업무가 있어 오전 반차 사용합니다.',
+            casual: '은행 볼 일 있어서 오전 반차 쓸게요!',
+          },
+          office: {
+            formal: '관공서 업무 처리를 위해 반차를 신청드립니다.',
+            normal: '관공서 갈 일이 있어 반차 사용합니다.',
+            casual: '관공서 다녀올게요, 반차 씁니다!',
+          },
+          childcare: {
+            formal: '자녀 관련 긴급 일정으로 반차를 신청드립니다.',
+            normal: '아이 관련 일정으로 반차 사용합니다.',
+            casual: '아이 건으로 반차 쓸게요!',
+          },
+        };
+        const generic = [
+          {
+            formal: '개인 사유로 오전(오후) 반차를 신청드립니다. 나머지 시간은 정상 근무하겠습니다.',
+            normal: '개인 일정으로 반차 사용 예정입니다. 이후 정상 근무합니다.',
+            casual: '개인 사정으로 반차 쓸게요. 나머지는 정상 근무합니다!',
+          },
+        ];
+        return base[ctx] || pickRandom(generic);
       },
-      이직: {
-        keywords: {
-          연봉: '더 나은 처우와 성장 기회',
-          돈: '커리어 성장과 새로운 도전',
-          싫: '새로운 환경에서의 도전',
-          성장: '전문성 심화 및 커리어 발전',
-          배울: '새로운 분야로의 도전',
-          환경: '업무 환경 변화 추구',
-          옮기: '새로운 기회 탐색',
-          분위기: '업무 환경 전환',
-        },
-        formal: (reason) => `그동안 많은 것을 배우고 성장할 수 있었습니다. 깊이 감사드리며, ${reason}을(를) 위해 새로운 도전을 하고자 합니다. 남은 기간 인수인계에 최선을 다하겠습니다.`,
-        normal: (reason) => `좋은 동료분들과 함께해서 정말 감사했습니다. ${reason}을(를) 위해 이직을 결정하게 되었습니다. 원활한 인수인계를 위해 최선을 다하겠습니다.`,
-        casual: (reason) => `함께해서 정말 좋았습니다! ${reason}을(를) 위해 새로운 곳으로 가게 되었어요. 앞으로도 좋은 인연 이어갔으면 합니다.`,
-        fallbackReason: '개인적인 커리어 발전',
+
+      이직: (ctx) => {
+        const base = {
+          salary: {
+            formal: '그동안 소중한 경험과 성장의 기회를 주신 데 진심으로 감사드립니다. 개인적인 커리어 방향성을 고려하여 새로운 도전을 하게 되었습니다. 남은 기간 인수인계에 최선을 다하겠습니다.',
+            normal: '좋은 동료분들과 함께할 수 있어서 정말 감사했습니다. 커리어 발전을 위해 새로운 기회를 찾게 되었습니다. 원활한 인수인계를 위해 최선을 다하겠습니다.',
+            casual: '함께해서 정말 좋았습니다. 새로운 도전을 위해 자리를 옮기게 되었어요. 앞으로도 좋은 인연 이어갔으면 합니다!',
+          },
+          growth: {
+            formal: '재직 기간 동안 많은 것을 배울 수 있었습니다. 전문성 심화를 위해 새로운 환경에서 도전하고자 하며, 남은 기간 인수인계에 최선을 다하겠습니다.',
+            normal: '여기서 배운 것들 정말 감사하게 생각합니다. 새로운 분야에서 도전해보고 싶어 이직을 결정했습니다. 인수인계 잘 마무리하겠습니다.',
+            casual: '여기서 많이 배웠고 감사해요. 새로운 도전을 위해 옮기게 되었습니다. 종종 연락하고 지내요!',
+          },
+          culture: {
+            formal: '재직 기간 동안 귀중한 경험을 할 수 있었습니다. 개인적인 커리어 방향성을 재고하여 새로운 환경에서의 도전을 결심하게 되었습니다. 원활한 인수인계를 위해 최선을 다하겠습니다.',
+            normal: '함께한 시간 감사했습니다. 새로운 방향으로의 도전을 위해 이직을 결정하게 되었습니다. 인수인계 꼼꼼히 하겠습니다.',
+            casual: '같이 일할 수 있어서 좋았어요. 새로운 곳에서 도전해보려고 합니다. 앞으로도 잘 지내요!',
+          },
+        };
+        const generic = {
+          formal: '재직 기간 동안 많은 것을 배우고 성장할 수 있었습니다. 깊이 감사드리며, 개인적인 커리어 발전을 위해 새로운 도전을 하게 되었습니다. 남은 기간 원활한 인수인계를 위해 최선을 다하겠습니다.',
+          normal: '좋은 동료분들과 함께해서 감사했습니다. 새로운 환경에서 도전해보고자 이직을 결정했습니다. 인수인계 꼼꼼히 마무리하겠습니다.',
+          casual: '함께해서 정말 좋았습니다! 새로운 곳에서 도전해보려고 해요. 앞으로도 좋은 인연 이어가요!',
+        };
+        return base[ctx] || generic;
       },
-      지각: {
-        keywords: {
-          늦잠: '기상 시간 지연',
-          알람: '기상 알람 오작동',
-          지하철: '대중교통 지연',
-          버스: '대중교통 운행 지연',
-          교통: '교통 상황 악화',
-          사고: '도로 교통사고로 인한 정체',
-          길: '예상치 못한 교통 정체',
-          아파: '갑작스러운 컨디션 저하',
-          비: '기상 악화로 인한 교통 지연',
-          눈: '기상 악화로 인한 이동 지연',
-        },
-        formal: (reason) => `금일 ${reason}(으)로 출근이 지연되었습니다. 대단히 죄송합니다. 이후 업무에 차질 없도록 하겠습니다.`,
-        normal: (reason) => `${reason}(으)로 늦었습니다. 죄송합니다, 바로 업무 시작하겠습니다.`,
-        casual: (reason) => `${reason} 때문에 늦었습니다 ㅠ 죄송해요, 바로 투입합니다!`,
-        fallbackReason: '예상치 못한 사정',
+
+      지각: (ctx) => {
+        const base = {
+          traffic: {
+            formal: '출근길 교통 상황 악화로 도착이 지연되었습니다. 대단히 죄송합니다. 이후 업무에 차질 없도록 하겠습니다.',
+            normal: '교통 정체로 늦었습니다. 죄송합니다, 바로 업무 시작하겠습니다.',
+            casual: '길이 많이 막혀서 늦었습니다. 죄송해요, 바로 시작할게요!',
+          },
+          overslept: {
+            formal: '금일 출근이 지연된 점 대단히 죄송합니다. 재발 방지에 유의하겠으며, 이후 업무에 차질 없도록 하겠습니다.',
+            normal: '늦어서 죄송합니다. 바로 업무 시작하겠습니다.',
+            casual: '늦어서 죄송합니다! 바로 투입하겠습니다.',
+          },
+          sick: {
+            formal: '출근 전 갑작스러운 컨디션 저하로 도착이 지연되었습니다. 죄송합니다.',
+            normal: '아침에 몸이 안 좋아서 늦었습니다. 죄송합니다, 지금은 괜찮습니다.',
+            casual: '컨디션이 갑자기 안 좋아서 늦었어요. 지금은 괜찮습니다!',
+          },
+        };
+        const generic = {
+          formal: '금일 부득이한 사정으로 출근이 지연되었습니다. 대단히 죄송합니다. 업무에 차질 없도록 하겠습니다.',
+          normal: '개인 사정으로 늦었습니다. 죄송합니다, 바로 업무 시작하겠습니다.',
+          casual: '늦어서 죄송합니다! 바로 시작할게요.',
+        };
+        return base[ctx] || generic;
       },
-      조퇴: {
-        keywords: {
-          아파: '건강 상태 악화',
-          머리: '심한 두통 발생',
-          열: '발열 증상',
-          병원: '긴급 병원 방문',
-          집: '긴급 주거 관련 사안',
-          아이: '자녀 긴급 돌봄',
-          가족: '긴급 가족 사안',
-          어린이집: '자녀 긴급 하원',
-          학교: '자녀 학교 관련 긴급 연락',
-        },
-        formal: (reason) => `${reason}(으)로 금일 조퇴를 요청드립니다. 잔여 업무는 정리 후 퇴근하겠으며, 내일 정상 출근하겠습니다. 양해 부탁드립니다.`,
-        normal: (reason) => `${reason}(으)로 조퇴하겠습니다. 급한 업무는 정리해두었습니다.`,
-        casual: (reason) => `${reason} 때문에 먼저 들어가겠습니다! 급한 건 메신저 남겨주세요.`,
-        fallbackReason: '갑작스러운 개인 사정',
+
+      조퇴: (ctx) => {
+        const base = {
+          headache: {
+            formal: '갑작스러운 두통으로 업무 지속이 어려워 조퇴를 요청드립니다. 잔여 업무는 정리 후 퇴근하겠습니다.',
+            normal: '두통이 심해서 조퇴하겠습니다. 급한 업무는 정리해두었습니다.',
+            casual: '머리가 너무 아파서 먼저 들어가겠습니다. 급한 건 메신저 남겨주세요!',
+          },
+          sick: {
+            formal: '갑작스러운 컨디션 저하로 조퇴를 요청드립니다. 양해 부탁드립니다.',
+            normal: '몸이 안 좋아서 조퇴하겠습니다. 급한 건 정리해두었습니다.',
+            casual: '컨디션이 안 좋아서 먼저 가겠습니다. 급한 건 연락주세요!',
+          },
+          unwell: {
+            formal: '건강 상태가 좋지 않아 조퇴를 요청드립니다. 잔여 업무는 정리하였습니다.',
+            normal: '몸 상태가 안 좋아서 조퇴하겠습니다. 내일 정상 출근합니다.',
+            casual: '몸이 안 좋아서 먼저 가볼게요. 내일 봐요!',
+          },
+          childcare: {
+            formal: '자녀 관련 긴급 상황으로 조퇴를 요청드립니다. 잔여 업무는 정리 후 퇴근하겠습니다.',
+            normal: '아이 건으로 급히 가봐야 해서 조퇴합니다.',
+            casual: '아이 건으로 먼저 가겠습니다!',
+          },
+          family: {
+            formal: '긴급 가정 사정으로 조퇴를 요청드립니다. 양해 부탁드립니다.',
+            normal: '집안에 급한 일이 생겨서 조퇴하겠습니다.',
+            casual: '집에 급한 일이 생겨서 먼저 갈게요!',
+          },
+        };
+        const generic = {
+          formal: '부득이한 개인 사정으로 조퇴를 요청드립니다. 잔여 업무는 정리 후 퇴근하겠습니다. 양해 부탁드립니다.',
+          normal: '개인 사정으로 조퇴하겠습니다. 급한 업무는 정리해두었습니다.',
+          casual: '개인 사정으로 먼저 가겠습니다. 급한 건 메신저 남겨주세요!',
+        };
+        return base[ctx] || generic;
       },
     };
 
     function generateExcuse(type, rawInput) {
-      const t = templates[type];
-      if (!t) return null;
-
-      // Find matching keyword
-      let reason = t.fallbackReason;
-      for (const [keyword, polished] of Object.entries(t.keywords)) {
-        if (rawInput.includes(keyword)) {
-          reason = polished;
-          break;
-        }
-      }
-
-      return {
-        formal: t.formal(reason),
-        normal: t.normal(reason),
-        casual: t.casual(reason),
-      };
+      const ctx = detectContext(rawInput);
+      const result = gen[type](ctx);
+      return result;
     }
 
     // =====================
-    // APP LOGIC
+    // APP
     // =====================
     let lang = 'kr';
     let selectedType = '연차';
@@ -476,13 +528,12 @@
     ['landing-kr','landing-en','input-kr','input-en','result-kr','result-en'].forEach(id => {
       pages[id] = document.getElementById(id);
     });
-
     function showPage(name) {
       Object.values(pages).forEach(p => p.classList.remove('active'));
       pages[name].classList.add('active');
     }
 
-    // Language toggle
+    // Lang toggle
     document.querySelectorAll('.lang-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelector('.lang-btn.active').classList.remove('active');
@@ -494,18 +545,17 @@
       });
     });
 
-    // Landing -> Input
+    // Start
     document.getElementById('startKr').addEventListener('click', () => showPage('input-kr'));
     document.getElementById('startEn').addEventListener('click', () => showPage('input-en'));
 
-    // Type pills
+    // Pills
     function setupPills(id) {
       document.getElementById(id).querySelectorAll('.type-pill').forEach(pill => {
         pill.addEventListener('click', () => {
           pill.parentElement.querySelector('.active').classList.remove('active');
           pill.classList.add('active');
           selectedType = pill.dataset.type;
-          // Sync other lang pills
           const other = id === 'typePillsKr' ? 'typePillsEn' : 'typePillsKr';
           document.getElementById(other).querySelectorAll('.type-pill').forEach(p => {
             p.classList.toggle('active', p.dataset.type === selectedType);
@@ -516,30 +566,25 @@
     setupPills('typePillsKr');
     setupPills('typePillsEn');
 
-    // Input sync & validation
+    // Inputs
     const inputKr = document.getElementById('inputKr');
     const inputEn = document.getElementById('inputEn');
     const submitKr = document.getElementById('submitKr');
     const submitEn = document.getElementById('submitEn');
-
     inputKr.addEventListener('input', () => {
       submitKr.disabled = !inputKr.value.trim();
-      inputEn.value = inputKr.value;
-      submitEn.disabled = submitKr.disabled;
+      inputEn.value = inputKr.value; submitEn.disabled = submitKr.disabled;
     });
     inputEn.addEventListener('input', () => {
       submitEn.disabled = !inputEn.value.trim();
-      inputKr.value = inputEn.value;
-      submitKr.disabled = submitEn.disabled;
+      inputKr.value = inputEn.value; submitKr.disabled = submitEn.disabled;
     });
 
     // Submit
     function handleSubmit() {
       const situation = (lang === 'kr' ? inputKr : inputEn).value.trim();
       if (!situation) return;
-
       const result = generateExcuse(selectedType, situation);
-      if (!result) return;
 
       const labels = {
         formal: { kr: '🎩 격식체', en: '🎩 Formal' },
@@ -559,7 +604,6 @@
 
       document.getElementById('resultKr').innerHTML = html;
       document.getElementById('resultEn').innerHTML = html;
-
       showPage('result-' + lang);
     }
 
@@ -575,8 +619,7 @@
     window.copyOne = function(btn) {
       const text = btn.parentElement.querySelector('.result-text').textContent;
       navigator.clipboard.writeText(text).then(() => {
-        btn.textContent = '✓ 복사됨';
-        btn.classList.add('copied');
+        btn.textContent = '✓ 복사됨'; btn.classList.add('copied');
         setTimeout(() => { btn.textContent = '복사'; btn.classList.remove('copied'); }, 2000);
       });
     };
@@ -595,11 +638,9 @@
       submitKr.disabled = true; submitEn.disabled = true;
     }
 
-    // Toast
     function showToast(msg) {
       const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('show');
+      t.textContent = msg; t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 2500);
     }
   </script>
